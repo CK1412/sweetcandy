@@ -3,11 +3,13 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import styles from './index.module.css';
+import Translate from '@docusaurus/Translate';
 
 function HomepageBackgroundWithTitle() {
   const { siteConfig } = useDocusaurusContext();
+  
   return (
-    <section className={styles.background}>
+    <div className={styles.background}>
       <img className={styles.backgroundImg} src='img/img-background.jpg'></img>
       <div className={styles.titleOnImg}>
         <h1 className="hero__title">{siteConfig.title}</h1>
@@ -15,19 +17,27 @@ function HomepageBackgroundWithTitle() {
         <Link
           className="button button--secondary button--lg"
           to="/docs/intro">
-          Get started
+          <Translate>Get started</Translate>
         </Link>
       </div>
-    </section>
+    </div>
   );
 }
 
 export default function Home() {
+  const { siteConfig } = useDocusaurusContext();
+
   return (
     <Layout
-      title="Hello"
+      title={siteConfig.tagline}
       description="">
-      <HomepageBackgroundWithTitle />
+
+      <main>
+        <section>
+          <HomepageBackgroundWithTitle />
+        </section>
+      </main>
+
     </Layout>
   );
 }

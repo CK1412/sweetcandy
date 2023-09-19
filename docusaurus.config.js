@@ -48,14 +48,12 @@ const config = {
         direction: 'ltr',
         htmlLang: 'vi-VN',
         calendar: 'gregory',
-        path: 'vi',
       },
       en: {
         label: 'English',
         direction: 'ltr',
         htmlLang: 'en-US',
         calendar: 'gregory',
-        path: 'en',
       }
     }
   },

@@ -6,30 +6,56 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'Sweetcandy',
+  tagline: 'Sweetcandy are great.',
   favicon: 'img/favicon.ico',
 
+  trailingSlash: false,
+
   // Set the production url of your site here
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://sweetcandy.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
+  // noIndex = true => does not show up in Google search results
+  noIndex: false,
+
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'canhcanh', // Usually your GitHub org/user name.
+  projectName: 'sweetcandy', // Usually your repo name.
+
+  deploymentBranch: 'main',
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
+
+  onDuplicateRoutes: 'warn',
+
+  staticDirectories: ['static'],
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: 'vi',
+    locales: ['vi', 'en'],
+    path: 'i18n',
+    localeConfigs: {
+      vi: {
+        label: 'Tiếng Việt',
+        direction: 'ltr',
+        htmlLang: 'vi-VN',
+        calendar: 'gregory',
+      },
+      en: {
+        label: 'English',
+        direction: 'ltr',
+        htmlLang: 'en-US',
+        calendar: 'gregory',
+      }
+    }
   },
 
   presets: [
@@ -39,17 +65,15 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          showLastUpdateAuthor: true,
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/CK1412/sweetcandy/tree/main/',
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/CK1412/sweetcandy/tree/main/',
+          postsPerPage: 5
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -61,77 +85,42 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      // meta image
+      image: 'img/img-sweet-candy.png',
+      metadata: [
+        { name: 'keywords', content: 'blog, flutter, dart, mobile' }
+      ],
       navbar: {
-        title: 'My Site',
+        title: 'Sweetcandy',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
         },
+        hideOnScroll: false,
         items: [
+          // Config in /sidebars.js
           {
             type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            sidebarId: 'codeSidebar',
             position: 'left',
-            label: 'Tutorial',
+            label: 'Code',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          { to: '/blog', label: 'Blog', position: 'left' },
+          // i18n feature
           {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
+            type: 'localeDropdown',
             position: 'right',
-          },
+          }
         ],
       },
       footer: {
         style: 'dark',
-        links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
-              },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
-              },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Sweetcandy`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        defaultLanguage: 'dart',
       },
     }),
 };

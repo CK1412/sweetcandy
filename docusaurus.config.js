@@ -101,10 +101,16 @@ const config = {
           // Config in /sidebars.js
           {
             type: 'docSidebar',
-            sidebarId: 'codeSidebar',
+            sidebarId: 'flutterDart',
             position: 'left',
-            label: 'Code',
+            label: 'Flutter & Dart',
           },
+          // {
+          //   type: 'docSidebar',
+          //   sidebarId: 'tutorialBasics',
+          //   position: 'left',
+          //   label: 'Tutorial Basics',
+          // },
           { to: '/blog', label: 'Blog', position: 'left' },
           // i18n feature
           {

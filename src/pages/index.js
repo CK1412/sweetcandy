@@ -16,7 +16,7 @@ function HomepageBackgroundWithTitle() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <Link
           className="button button--secondary button--lg"
-          to="/docs/intro">
+          to="/docs/flutter-dart">
           <Translate>Get started</Translate>
         </Link>
       </div>

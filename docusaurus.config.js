@@ -4,6 +4,9 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+// npm install @docusaurus/remark-plugin-npm2yarn
+const npm2yarn = require('@docusaurus/remark-plugin-npm2yarn');
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Sweetcandy',
@@ -68,12 +71,14 @@ const config = {
           showLastUpdateAuthor: true,
           editUrl:
             'https://github.com/CK1412/sweetcandy/tree/main/',
+          remarkPlugins: [npm2yarn]
         },
         blog: {
           showReadingTime: true,
           editUrl:
             'https://github.com/CK1412/sweetcandy/tree/main/',
-          postsPerPage: 5
+          postsPerPage: 5,
+          remarkPlugins: [npm2yarn]
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -101,10 +106,16 @@ const config = {
           // Config in /sidebars.js
           {
             type: 'docSidebar',
-            sidebarId: 'codeSidebar',
+            sidebarId: 'flutterDart',
             position: 'left',
-            label: 'Code',
+            label: 'Flutter & Dart',
           },
+          // {
+          //   type: 'docSidebar',
+          //   sidebarId: 'tutorialBasics',
+          //   position: 'left',
+          //   label: 'Tutorial Basics',
+          // },
           { to: '/blog', label: 'Blog', position: 'left' },
           // i18n feature
           {
@@ -121,6 +132,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
         defaultLanguage: 'dart',
+        additionalLanguages: ['dart']
       },
     }),
 };

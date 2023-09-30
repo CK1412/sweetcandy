@@ -1,0 +1,99 @@
+---
+sidebar_position: 1
+title: Debounce
+---
+
+# Debounce
+
+Debounce là kỹ thuật tối ưu hiệu suất bằng cách buộc một hàm phải đợi một khoảng thời gian nhất định trước khi thực thi. 
+Nếu có sự kiện mới xảy ra trong khoảng thời gian này, thời gian chờ sẽ bắt đầu lại. 
+Chỉ khi không có sự kiện mới trong khoảng thời gian đó thì hàm được gọi.
+
+![Hình minh hoạ Debounce](/docs/flutter-dart/utils/operators/debounce.png)
+
+## Ứng dụng
+1. Khi người dùng nhấn liên tục vào 1 nút để gọi 1 chức năng, chắc năng đó sẽ được gọi nhiều lần 
+  -> Debounce được sử dụng để ngăn chặn hành vi spam này.
+2. Người dùng muốn tìm kiếm theo thời gian thực bằng cách gõ từ khóa tìm kiếm vào ô tìm kiếm.
+    - Thông thường: Mỗi khi ký tự nhập vào thay đổi -> gọi API tìm kiếm -> Cách này sẽ khiến cho Backend sẽ phải chịu tải lớn và tốn tài nguyên (như băng thông) do API được gọi liên tục.
+    - Sử dụng Debounce: Không có ký tự thay đổi trong 1 khoảng thời gian nhất định -> API tìm kiếm được gọi.  
+
+:::info
+
+Trong trường hợp số 2, việc sử dụng Debounce giúp tối ưu hiệu suất ứng dụng tốt hơn so với cách thông thường.
+
+:::
+
+=> **Debounce** thường được sử dụng để ngăn chặn những hành vi xảy ra liên tục trong một thời gian, giúp tối ưu hóa hiệu suất ứng dụng và nâng cao trải nghiệm người dùng.
+
+## Code triển khai
+Tạo một class triển khai debounce:
+
+```dart title="debounce.dart"
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+class Debounce {
+  final Duration duration;
+
+  Debounce({
+    this.duration = const Duration(milliseconds: 500),
+  });
+
+  Timer? _timer;
+
+  void run(VoidCallback action) {
+    _timer?.cancel();
+    _timer = Timer(duration, () {
+      action.call();
+    });
+  }
+
+  void dispose() {
+    _timer?.cancel();
+    _timer = null;
+  }
+}
+```
+
+## Cách sử dụng
+
+```dart 
+import 'package:flutter/material.dart';
+
+import 'debounce.dart';
+
+class SearchField extends StatefulWidget {
+  const SearchField({super.key});
+
+  @override
+  State<SearchField> createState() => _SearchField();
+}
+
+class _SearchField extends State<SearchField> {
+  // highlight-next-line
+  final _debounce = Debounce();
+
+  @override
+  void dispose() {
+    // highlight-next-line
+    _debounce.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: (value) {
+        // highlight-start
+        _debounce.run(() {
+          // Do something
+          // Example: Call Api to search
+        });
+        // highlight-end
+      },
+    );
+  }
+}
+```

@@ -1,0 +1,73 @@
+---
+sidebar_position: 1
+title: 1. Singleton Pattern
+---
+
+# Singleton Pattern
+
+Single Pattern là một design pattern mà:
+- Đảm bảo mỗi class chỉ có một thể hiện (**instance**) duy nhất.
+- Cung cấp một điểm truy cập toàn cầu cho instance đó.
+- Chỉ khởi tạo class khi được sử dụng lần đầu tiên. 
+
+## Ứng dụng
+
+Chia sẻ dữ liệu chung trong 1 class. Ví dụ: một database duy nhất, một file, ...
+
+## Code triển khai
+
+### Single-threaded singleton
+
+```dart title="db_manager.dart"
+import 'dart:isolate';
+
+class DbManager {
+  /// [4.] Đặt hàm khởi tạo của class ở chế độ private, để chỉ có thể gọi hàm tạo ở bước 2.
+  DbManager._();
+
+  /// [1.] Tạo 1 trường static lưu trữ phiên bản Singleton.
+  static DbManager? _instance;
+
+  /// [2.] Khai báo 1 phương thức khởi tạo để lấy phiên bản Singleton.
+  factory DbManager() {
+    /// [3.] Triển khai 1 khởi tạo Lazy và luôn trả về phiên bản đã lưu trữ.
+    return _instance ??= DbManager._();
+  }
+
+  /// Một dạng khởi tạo khác của bước 2.
+  static DbManager get instance {
+    return _instance ??= DbManager._();
+  }
+}
+
+void main() async {
+  /// For Single-threaded
+  ///
+  final DbManager db1 = DbManager();
+  final DbManager db2 = DbManager();
+
+  // highlight-next-line
+  assert(db1 == db2);
+
+  /// For Multi-threaded
+  ///
+  final DbManager db3 = DbManager();
+  final DbManager db4 = await Isolate.run(() => DbManager());
+
+  // highlight-next-line
+  assert(db3 != db4);
+}
+```
+
+### Multi-threaded singleton
+
+Trong các ngôn ngữ đa luồng, chúng ta cần cẩn thận khi truy cập các Singleton trên các luồng khác nhau 
+và một số cơ chế đồng bộ hóa có thể cần thiết nếu chúng chia sẻ dữ liệu có thể thay đổi.
+
+Class `DbManager` ở trên hoạt động không đúng trong môi trường đa luồng. 
+Trong môi trường đa luồng có thể gọi phương thức khởi tạo đồng thời và nhận được một số phiên bản của class `DbManager`.
+
+Mặc dù Dart có hỗ trợ đa luồng, tuy nhiên bạn không cần quá lo lắng vì tất cả mã trong ứng dụng Flutter đều thuộc về luồng chính (**main isolate**).
+
+## Tài liệu tham khảo
+- https://refactoring.guru/design-patterns/singleton

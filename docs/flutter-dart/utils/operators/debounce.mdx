@@ -5,6 +5,8 @@ title: Debounce
 
 # Debounce
 
+## Debounce là gì?
+
 Debounce là kỹ thuật tối ưu hiệu suất bằng cách buộc một hàm phải đợi một khoảng thời gian nhất định trước khi thực thi. 
 Nếu có sự kiện mới xảy ra trong khoảng thời gian này, thời gian chờ sẽ bắt đầu lại. 
 Chỉ khi không có sự kiện mới trong khoảng thời gian đó thì hàm được gọi.
@@ -14,7 +16,7 @@ Chỉ khi không có sự kiện mới trong khoảng thời gian đó thì hàm
 ## Ứng dụng
 1. Khi người dùng nhấn liên tục vào 1 nút để gọi 1 chức năng, chắc năng đó sẽ được gọi nhiều lần 
   -> Debounce được sử dụng để ngăn chặn hành vi spam này.
-2. Người dùng muốn tìm kiếm theo thời gian thực bằng cách gõ từ khóa tìm kiếm vào ô tìm kiếm.
+2. Người dùng muốn tìm kiếm trực tiếp bằng cách gõ từ khóa tìm kiếm vào ô tìm kiếm.
     - Thông thường: Mỗi khi ký tự nhập vào thay đổi -> gọi API tìm kiếm -> Cách này sẽ khiến cho Backend sẽ phải chịu tải lớn và tốn tài nguyên (như băng thông) do API được gọi liên tục.
     - Sử dụng Debounce: Không có ký tự thay đổi trong 1 khoảng thời gian nhất định -> API tìm kiếm được gọi.  
 

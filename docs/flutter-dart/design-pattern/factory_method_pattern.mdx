@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-title: 2. Factory Method Pattern
+title: Factory Method
 ---
 
 # Factory Method Pattern
@@ -10,7 +10,7 @@ title: 2. Factory Method Pattern
 ## Factory Method là gì?
 
 Factory Method là một mẫu thiết kế cho chúng ta định nghĩa được nhiều đối tượng và cho phép các lớp con tự quyết định 
-là cái nào được khởi tạo, giúp che giấu logic tạo của đối tượng khỏi mã máy khách.
+là cái nào được khởi tạo, giúp che giấu logic tạo của đối tượng khỏi client code.
 
 ## Sơ đồ minh hoạ
 
@@ -19,29 +19,29 @@ là cái nào được khởi tạo, giúp che giấu logic tạo của đối t
 title: Relationships diagram
 ---
 classDiagram
-  note "Lớp Dog và Cat đều phải triển khai giao diện Animal, giao diện này khai báo một phương thức có tên là `sound`.
-        Mỗi lớp thực hiện phương thức này một cách khác nhau: Chó (Dog) sủa woof woof, Mèo (Cat) kêu Meow Meow."
-  class Animal
+    note "Lớp Dog và Cat đều phải triển khai giao diện Animal, \ngiao diện này khai báo một phương thức có tên là `sound`.
+          Mỗi lớp thực hiện phương thức này một cách khác nhau: \nChó (Dog) sủa woof woof, Mèo (Cat) kêu Meow Meow."
+    class Animal
     <<interface>> Animal
     Animal <|-- Cat
     Animal <|-- Dog
     Animal : ...
-    Animal: +sound()
-  class Dog{
-    +...
-    +sound()
-  }
-  class Cat{
-    +...
-    +sound()
-  }
+    Animal : +sound()
+    class Dog{
+      +...
+      +sound()
+    }
+    class Cat{
+      +...
+      +sound()
+    }
 ```
 
 ## Code triển khai
 
-### Factory Method example
+### Example in Dart
 
-```dart title="Factory Method example"
+```dart title="Factory Method example in Dart"
 abstract class Animal {
   factory Animal(AnimalSpecies species) {
     return switch (species) {
@@ -83,7 +83,7 @@ void main(List<String> args) {
 }
 ```
 
-### Factory Method example in Flutter {#factory-method-example-in-flutter}
+### Example in Flutter {#example-in-flutter}
 
 Trong ví dụ này, Factory Method được sử dụng để tạo một FilledButton hiển thị theo nền tảng. 
 
@@ -169,140 +169,6 @@ class MyAppScreen extends StatelessWidget {
   }
 }
 ```
-
-## Abstract Factory Method pattern
-> Mở rộng của Factory Method
-
-Đoạn mã dưới đây sẽ mở rộng [ví dụ trước đó](#factory-method-example-in-flutter) theo Abstract Factory Method.
-
-```dart title="Abstract Factory Method example in Flutter"
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-abstract class PlatformFilledButton {
-  // ...
-}
-
-class MaterialFilledButton implements PlatformFilledButton {
-  // ...
-}
-
-class CupertinoFilledButton implements PlatformFilledButton {
-  /// ...
-}
-
-abstract class PlatformSwitch {
-  factory PlatformSwitch(TargetPlatform platform) {
-    return switch (platform) {
-      TargetPlatform.android ||
-      TargetPlatform.fuchsia ||
-      TargetPlatform.linux ||
-      TargetPlatform.windows =>
-        MaterialSwitch(),
-      TargetPlatform.iOS || TargetPlatform.macOS => MyCupertinoSwitch(),
-    };
-  }
-
-  Widget build(
-    BuildContext context, {
-    required bool value,
-    required ValueChanged<bool> onChanged,
-  });
-}
-
-class MaterialSwitch implements PlatformSwitch {
-  @override
-  Widget build(
-    BuildContext context, {
-    required bool value,
-    required ValueChanged<bool> onChanged,
-  }) {
-    return Switch(
-      value: value,
-      onChanged: onChanged,
-    );
-  }
-}
-
-class MyCupertinoSwitch implements PlatformSwitch {
-  @override
-  Widget build(
-    BuildContext context, {
-    required bool value,
-    required ValueChanged<bool> onChanged,
-  }) {
-    return CupertinoSwitch(
-      value: value,
-      onChanged: onChanged,
-    );
-  }
-}
-
-/// Implement Abstract Factory Method
-///
-class PlatformWidget {
-  static Widget buildFilledButton(
-    BuildContext context, {
-    required Widget child,
-    required VoidCallback onPressed,
-  }) {
-    return PlatformFilledButton(Theme.of(context).platform).build(
-      context,
-      child: child,
-      onPressed: onPressed,
-    );
-  }
-
-  static Widget buildSwitch(
-    BuildContext context, {
-    required bool value,
-    required ValueChanged<bool> onChanged,
-  }) {
-    return PlatformSwitch(Theme.of(context).platform).build(
-      context,
-      value: value,
-      onChanged: onChanged,
-    );
-  }
-}
-
-void main(List<String> args) {
-  runApp(const MyAppScreen());
-}
-
-class MyAppScreen extends StatefulWidget {
-  const MyAppScreen({super.key});
-
-  @override
-  State<MyAppScreen> createState() => _MyAppScreenState();
-}
-
-class _MyAppScreenState extends State<MyAppScreen> {
-  bool _value = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: PlatformWidget.buildSwitch(
-            context,
-            value: _value,
-            onChanged: (value) {
-              setState(() {
-                _value = value;
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-```
-
-Qua ví dụ này, chúng ta có thể thấy Abstract Factory Method pattern có một số ưu điểm so với Factory Method pattern,
-cho phép viết client code rõ ràng mà không cần biết subclass của platform nào sẽ được tạo.
 
 ## Tài liệu tham khảo
 - https://refactoring.guru/design-patterns/factory-method

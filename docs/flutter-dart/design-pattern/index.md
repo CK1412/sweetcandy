@@ -10,19 +10,21 @@ Design Pattern là các giải pháp tổng thể đã được tối ưu hóa, 
 
 23 Design Pattern được giới thiệu trong GoF, chia thành 3 nhóm: 
 
-| Creational Pattern            | Structural Pattern      | Behavioral Pattern                  |
-| ---------------------------   | ----------------------- | ----------------------------------- |
-| 1. [Singleton Pattern (⭐)][1]     | 6. Adapter Pattern      | 13. Chain of responsibility Pattern |
-| 2. [Abstract Factory Pattern(⭐)][2]   | 7. Bridge Pattern       | 14. Command Pattern                 |
-| 3. Builder Pattern            | 8. Composite Pattern    | 15. Interpreter Pattern             |
-| 4. Factory Pattern            | 9. Decorator Pattern    | 16. Iterator Pattern                |
-| 5. Prototype Pattern          | 10. Facade Pattern      | 17. Mediator Pattern                |
-|                               | 11. Flyweight Pattern   | 18. Memento Pattern                 | 
-|                               | 12. Proxy Pattern       | 19. Observer Pattern                |            
-|                               |                         | 20. State Pattern                   |
-|                               |                         | 21. Strategy Pattern                |
-|                               |                         | 22. Template method Pattern         |
-|                               |                         | 23. Visitor Pattern                 |
+| Creational Pattern                          | Structural Pattern      | Behavioral Pattern                  |
+| ---------------------------                 | ----------------------- | ----------------------------------- |
+| 1. [Singleton Pattern (⭐⭐⭐)][1]         | 6. Adapter Pattern      | 13. Chain of responsibility Pattern |
+| 2. [Abstract Factory Pattern (⭐⭐⭐)][2]  | 7. Bridge Pattern       | 14. Command Pattern                 |
+| 3. Builder Pattern                          | 8. Composite Pattern    | 15. Interpreter Pattern             |
+| 4. [Factory Method Pattern (⭐⭐⭐)][4]    | 9. Decorator Pattern    | 16. Iterator Pattern                |
+| 5. Prototype Pattern                        | 10. Facade Pattern      | 17. Mediator Pattern                |
+|                                             | 11. Flyweight Pattern   | 18. Memento Pattern                 | 
+|                                             | 12. Proxy Pattern       | 19. Observer Pattern                |            
+|                                             |                         | 20. State Pattern                   |
+|                                             |                         | 21. Strategy Pattern                |
+|                                             |                         | 22. Template method Pattern         |
+|                                             |                         | 23. Visitor Pattern                 |
 
-[1]: /flutter-dart/design-pattern/singleton_pattern.mdx
-[2]: /flutter-dart/design-pattern/factory_method_pattern.mdx
+[1]: docs/flutter-dart/design-pattern/singleton_pattern.mdx
+[2]: docs/flutter-dart/design-pattern/abstract_factory_pattern.mdx
+[4]: docs/flutter-dart/design-pattern/factory_method_pattern.mdx
+

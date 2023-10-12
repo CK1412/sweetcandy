@@ -24,7 +24,7 @@ Design Pattern là các giải pháp tổng thể đã được tối ưu hóa, 
 |                                             |                         | 22. Template method Pattern         |
 |                                             |                         | 23. Visitor Pattern                 |
 
-[1]: docs/flutter-dart/design-pattern/singleton_pattern.mdx
-[2]: docs/flutter-dart/design-pattern/abstract_factory_pattern.mdx
-[4]: docs/flutter-dart/design-pattern/factory_method_pattern.mdx
+[1]: docs/flutter_dart/design_pattern/creational_pattern/singleton_pattern.mdx
+[2]: docs/flutter_dart/design_pattern/creational_pattern/abstract_factory_pattern.mdx
+[4]: docs/flutter_dart/design_pattern/creational_pattern/factory_method_pattern.mdx
 

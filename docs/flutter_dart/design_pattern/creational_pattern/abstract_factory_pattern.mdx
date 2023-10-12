@@ -95,6 +95,9 @@ class AnimalFactoryImpl implements AnimalFactory {
 }
 
 void main(List<String> args) {
+  /// Client code chỉ làm việc với các Factory và Animal thông qua các kiểu trừu tượng: AnimalFactory, Animal. 
+  /// Điều này cho phép bạn chuyển bất kỳ lớp con factory hoặc animal nào cho client code mà không phá vỡ nó.
+  /// 
   final AnimalFactory animalFactory = AnimalFactoryImpl();
   final Animal dog = animalFactory.createDog();
   final Animal cat = animalFactory.createCat();
@@ -109,7 +112,7 @@ void main(List<String> args) {
 
 ### Example in Flutter
 
-Đoạn mã dưới đây sẽ mở rộng [ví dụ trước đó](../design-pattern/factory_method_pattern.mdx#example-in-flutter) của *Pactory Method Pattern* theo Abstract Factory Method.
+Đoạn mã dưới đây sẽ mở rộng [ví dụ trước đó](../creational_pattern/factory_method_pattern.mdx#example-in-flutter) của *Pactory Method Pattern* theo Abstract Factory Method.
 
 ```dart title="Abstract Factory Method example in Flutter"
 import 'package:flutter/cupertino.dart';

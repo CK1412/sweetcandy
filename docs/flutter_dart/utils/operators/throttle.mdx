@@ -1,0 +1,101 @@
+---
+sidebar_position: 2
+title: Throttle
+---
+
+# Throttle 
+
+## Throttle là gì?
+
+- Throttle là một kỹ thuật giúp giới hạn số lần gọi hàm trong một khoảng thời gian. 
+Ví dụ khi một hàm dùng Throttle, Throttle sẽ gọi hàm này nhiều nhất 1 lần trong một đơn vị thời gian.
+
+## Ví dụ
+- Khi ta cuộn một danh sách và có **hàm F** để lắng nghe sự thay đổi.
+    - Thông thường trong 10 giây, hàm F sẽ được gọi **100 lần**.
+    - Sử dụng Throttle với thời gian đặt là 1 giây, hàm F sẽ chỉ còn được gọi **10 lần trong 10 giây**.
+
+## Ứng dụng
+Throttle có thể được sử dụng trong một số trường hợp sau:
+- **Lắng nghe các sự kiện thời gian thực**: Ví dụ như lắng nghe vị trí người dùng qua Google Map -> tránh việc cập nhật dữ liệu 
+liên tục làm ảnh hưởng đến trải nghiệm người dùng và hiệu suất ứng dụng.
+- **Xử lý sự kiện cuộn (scroll event)**: khi ta cuộn một danh sách, Throttle có thể được sử dụng để kiểm soát tần suất xử lý sự
+kiện cuộn -> tránh việc xử lý nhiều lần và giảm tải cho CPU.
+- **Gửi dữ liệu lên máy chủ**: Khi người dùng tương tác với ứng dụng, Throttle có thể được sử dụng để kiểm soát tần suất 
+gửi dữ liệu lên máy chủ, ví dụ: trong trường hợp gửi dữ liệu biểu mẫu.
+
+## Code triển khai
+Tạo một class triển khai Throttle:
+
+```dart title="lib/utils/operators/throttle.dart"
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+class Throttle {
+  final Duration duration;
+
+  bool _isThrottling = false;
+  Timer? _timer;
+
+  Throttle({
+    this.duration = const Duration(milliseconds: 500),
+  });
+
+  void run(VoidCallback action) {
+    if (!_isThrottling) {
+      _isThrottling = true;
+
+      action.call();
+
+      _timer = Timer(duration, () {
+        _isThrottling = false;
+      });
+    }
+  }
+
+  void dispose() {
+    _timer?.cancel();
+    _timer = null;
+  }
+}
+```
+## Cách sử dụng
+
+```dart
+import 'package:flutter/material.dart';
+
+import 'throttle.dart';
+
+class SearchField extends StatefulWidget {
+  const SearchField({super.key});
+
+  @override
+  State<SearchField> createState() => _SearchField();
+}
+
+class _SearchField extends State<SearchField> {
+  // highlight-next-line
+  final _throttle = Throttle();
+
+  @override
+  void dispose() {
+    // highlight-next-line
+    _throttle.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: (value) {
+        // highlight-start
+        _throttle.run(() {
+          // Do something
+        });
+        // highlight-end
+      },
+    );
+  }
+}
+```

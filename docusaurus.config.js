@@ -13,6 +13,11 @@ const config = {
   tagline: 'Sweetcandy are great.',
   favicon: 'img/favicon.ico',
 
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
+
   trailingSlash: false,
 
   // Set the production url of your site here

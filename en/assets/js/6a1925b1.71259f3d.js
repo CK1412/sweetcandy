@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksweetcandy=self.webpackChunksweetcandy||[]).push([[6790],{8308:e=>{e.exports=JSON.parse('{"permalink":"/sweetcandy/en/blog/tags/facebook","page":1,"postsPerPage":5,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

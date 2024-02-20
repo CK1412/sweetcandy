@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksweetcandy=self.webpackChunksweetcandy||[]).push([[273],{4849:e=>{e.exports=JSON.parse('{"label":"facebook","permalink":"/sweetcandy/blog/tags/facebook","allTagsPath":"/sweetcandy/blog/tags","count":1}')}}]);

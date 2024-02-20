@@ -1,0 +1,166 @@
+---
+sidebar_position: 4
+title: Builder
+---
+
+# Builder Pattern
+
+## Builder Pattern là gì?
+
+Builder Pattern là mẫu thiết kế phân tác các đối tượng phức tạo thành các bộ phận, sau đó tạo từng bước tạo các bộ phận
+riêng biệt đó tuỳ theo nhu cầu sử dụng khác nhau, và cuối cùng là ghép các bộ phận đó thành đối tượng phức tạp.
+
+## Ví dụ
+
+Để xây dựng 1 chiếc ô tô hoàn chỉnh, ta cần tạo các bộ phận của nó như: động cơ, khung xe, ghế ngồi, ... 
+Sau đó lắp ráp chúng lại thành một chiếc ô tô hoàn chỉnh. Và tất nhiên quy trình tạo các bộ phận sẽ khác nhau tuỳ thuộc vào
+loại ô tô.
+Áp dụng Builder Pattern vào ví dụ trên thì:
+- Ô tô ----- 1 đối tượng phức tạp.
+- Tạo các bộ phận ô tô ----- Tạo các bộ phận riêng biệt.
+- Lắp ráp chúng thành ô tô ----- Ghép các bộ phận thành đối tượng phức tạp.
+
+## Code triển khai
+
+```dart title="Builder Pattern example in Dart"
+class Car {
+  final String engine; // động cơ xe
+  final String chassis; // khung xe
+  final int seats; // số ghế ngồi
+  // ....
+
+  Car(CarBuilder builder)
+      : engine = builder.engine,
+        chassis = builder.chassis,
+        seats = builder.seats;
+
+  @override
+  String toString() {
+    return 'Engine: $engine\nChassis: $chassis\nSeats: $seats';
+  }
+}
+
+/// Implement Builder Pattern
+class CarBuilder {
+  String? _engine;
+  String? _chassis;
+  int? _seats;
+
+  String get engine => _engine ?? '';
+  String get chassis => _chassis ?? '';
+  int get seats => _seats ?? 0;
+
+  void setEngine(String value) {
+    _engine = value;
+  }
+
+  void setChassis(String value) {
+    _chassis = value;
+  }
+
+  void setSeats(int value) {
+    _seats = value;
+  }
+}
+
+void main() {
+  final CarBuilder carBuilder = CarBuilder()
+    ..setEngine('Diesel engine')
+    ..setChassis('Monolithic chassis')
+    ..setSeats(4);
+  final Car car = Car(carBuilder);
+
+  print('Car 1:\n$car');
+  // Output:
+  //
+  // Car 1:
+  // Engine: Diesel engine
+  // Chassis: Monolithic chassis
+  // Seats: 4
+
+  final CarBuilder carBuilder2 = CarBuilder()
+    ..setEngine('Electric engine')
+    ..setChassis('Monolithic chassis')
+    ..setSeats(6);
+  final Car car2 = Car(carBuilder2);
+
+  print('\nCar 2:\n$car2');
+  // Output:
+  //
+  // Car 2:
+  // Engine: Electric engine
+  // Chassis: Monolithic chassis
+  // Seats: 6
+}
+```
+
+:::tip Recommend
+
+Tuy nhiên trong ngôn ngữ Dart, việc triển khai **Builder Pattern** là dài dòng, không linh hoạt.
+Chúng ta có cách khác tốt hơn đó là sử dụng `copyWith` method, việc này giúp lớp `Car` trở thành `immutable`.
+
+Mã bên dưới là cách thực hiện.
+
+:::
+
+```dart title="Example in Dart without Builder Pattern"
+class Car {
+  final String engine; // động cơ xe
+  final String chassis; // khung xe
+  final int seats; // số ghế ngồi
+  // ....
+
+  Car({
+    required this.engine,
+    required this.chassis,
+    required this.seats,
+  });
+
+  Car copyWith({
+    String? engine,
+    String? chassis,
+    int? seats,
+  }) {
+    return Car(
+      engine: engine ?? this.engine,
+      chassis: chassis ?? this.chassis,
+      seats: seats ?? this.seats,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Engine: $engine\nChassis: $chassis\nSeats: $seats';
+  }
+}
+
+void main() {
+  Car car = Car(
+    engine: 'Diesel engine',
+    chassis: 'Monolithic chassis',
+    seats: 4,
+  );
+
+  print('\nCar 1:\n$car');
+  // Output:
+  //
+  // Car 1:
+  // Engine: Diesel engine
+  // Chassis: Monolithic chassis
+  // Seats: 4
+
+  car = car.copyWith(seats: 6, engine: 'Electric engine');
+  print('\nCar 1:\n$car');
+  // Output:
+  //
+  // Car 1:
+  // Engine: Electric engine
+  // Chassis: Monolithic chassis
+  // Seats: 6
+}
+```
+
+## Tài liệu tham khảo:
+
+- https://refactoring.guru/design-patterns/builder
+- https://namanrivaan.medium.com/builder-pattern-in-dart-flutter-why-is-builder-pattern-not-used-anymore-610a133e344c

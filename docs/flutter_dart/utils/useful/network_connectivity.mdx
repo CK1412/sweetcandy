@@ -39,7 +39,12 @@ class NetworkConnectivity {
   ConnectionStatus? _status;
   ConnectionStatus get status => _status ?? ConnectionStatus.offline;
 
-  void _initConnectivity() async {
+  // Call when launch app
+  void init() {
+    _initConnectivity();
+  }
+
+  Future<void> _initConnectivity() async {
     try {
       final connectivityResult = await _connectivity.checkConnectivity();
       _updateConnectionStatus(connectivityResult);
@@ -53,6 +58,8 @@ class NetworkConnectivity {
       case ConnectivityResult.mobile:
       case ConnectivityResult.wifi:
       case ConnectivityResult.ethernet:
+      case ConnectivityResult.vpn:
+      case ConnectivityResult.other:
         _status = ConnectionStatus.online;
       default:
         _status = ConnectionStatus.offline;

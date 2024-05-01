@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksweetcandy=self.webpackChunksweetcandy||[]).push([[7393],{1838:e=>{e.exports=JSON.parse('{"blogBasePath":"/sweetcandy/en/blog","blogTitle":"Blog"}')}}]);

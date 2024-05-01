@@ -115,13 +115,19 @@ const config = {
             position: 'left',
             label: 'Flutter & Dart',
           },
+          {
+            type: 'docSidebar',
+            sidebarId: 'showcase',
+            position: 'left',
+            label: 'Showcase',
+          },
           // {
           //   type: 'docSidebar',
           //   sidebarId: 'tutorialBasics',
           //   position: 'left',
           //   label: 'Tutorial Basics',
           // },
-          { to: '/blog', label: 'Blog', position: 'left' },
+          // { to: '/blog', label: 'Blog', position: 'left' },
           // i18n feature
           {
             type: 'localeDropdown',

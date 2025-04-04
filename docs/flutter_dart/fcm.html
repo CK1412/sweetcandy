@@ -5,7 +5,7 @@
 <meta name="generator" content="Docusaurus v3.2.1">
 <title data-rh="true">FCM | Sweetcandy</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://sweetcandy.github.io/sweetcandy/img/img-sweet-candy.png"><meta data-rh="true" name="twitter:image" content="https://sweetcandy.github.io/sweetcandy/img/img-sweet-candy.png"><meta data-rh="true" property="og:url" content="https://sweetcandy.github.io/sweetcandy/docs/flutter_dart/fcm"><meta data-rh="true" property="og:locale" content="vi_VN"><meta data-rh="true" property="og:locale:alternate" content="en_US"><meta data-rh="true" name="docusaurus_locale" content="vi"><meta data-rh="true" name="docsearch:language" content="vi"><meta data-rh="true" name="keywords" content="blog, flutter, dart, mobile"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="FCM | Sweetcandy"><meta data-rh="true" name="description" content="- Fcm là dịch vụ push notification miễn phí của Firebase, cho phép gửi thông báo từ server đến"><meta data-rh="true" property="og:description" content="- Fcm là dịch vụ push notification miễn phí của Firebase, cho phép gửi thông báo từ server đến"><link data-rh="true" rel="icon" href="/sweetcandy/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://sweetcandy.github.io/sweetcandy/docs/flutter_dart/fcm"><link data-rh="true" rel="alternate" href="https://sweetcandy.github.io/sweetcandy/docs/flutter_dart/fcm" hreflang="vi-VN"><link data-rh="true" rel="alternate" href="https://sweetcandy.github.io/sweetcandy/en/docs/flutter_dart/fcm" hreflang="en-US"><link data-rh="true" rel="alternate" href="https://sweetcandy.github.io/sweetcandy/docs/flutter_dart/fcm" hreflang="x-default"><link rel="alternate" type="application/rss+xml" href="/sweetcandy/blog/rss.xml" title="Sweetcandy RSS Feed">
 <link rel="alternate" type="application/atom+xml" href="/sweetcandy/blog/atom.xml" title="Sweetcandy Atom Feed"><link rel="stylesheet" href="/sweetcandy/assets/css/styles.d2889c42.css">
-<script src="/sweetcandy/assets/js/runtime~main.b37c8d7a.js" defer="defer"></script>
+<script src="/sweetcandy/assets/js/runtime~main.e0ece352.js" defer="defer"></script>
 <script src="/sweetcandy/assets/js/main.f5140abd.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -16,7 +16,7 @@ Android, IOS và Web.</li>
 </ul>
 <h2 class="anchor anchorWithStickyNavbar_FNw8" id="cơ-chế-hoạt-động">Cơ chế hoạt động<a href="#cơ-chế-hoạt-động" class="hash-link" aria-label="Đường dẫn trực tiếp tới Cơ chế hoạt động" title="Đường dẫn trực tiếp tới Cơ chế hoạt động">​</a></h2>
 <ol>
-<li>App lấy FCM registration Token -&gt; FCM Token đối với Android và APNToken với IOS).</li>
+<li>App lấy FCM registration Token -&gt; FirebaseMessaging.instance.getToken().</li>
 <li>Gửi FCM token lên server. -&gt; Server lưu token để gửi thông báo sau này.</li>
 <li>Server gửi thông báo qua Firebase -&gt; Firebase gửi đến thiết bị dựa vào token.</li>
 <li>App nhận và hiển thị thông báo.</li>
@@ -38,7 +38,14 @@ Android, IOS và Web.</li>
 <ul>
 <li>Trên Android</li>
 </ul>
-<div class="language-xml codeBlockContainer_aalF theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_MHx8"><pre tabindex="0" class="prism-code language-xml codeBlock_zHgq thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_RjmQ"><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">manifest</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   </span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">uses-permission</span><span class="token tag" style="color:#00009f"> </span><span class="token tag attr-name namespace" style="color:#00a4db;opacity:0.7">android:</span><span class="token tag attr-name" style="color:#00a4db">name</span><span class="token tag attr-value punctuation attr-equals" style="color:#393A34">=</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag attr-value" style="color:#e3116c">android.permission.POST_NOTIFICATIONS</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag" style="color:#00009f"> </span><span class="token tag punctuation" style="color:#393A34">/&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   </span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">uses-permission</span><span class="token tag" style="color:#00009f"> </span><span class="token tag attr-name namespace" style="color:#00a4db;opacity:0.7">android:</span><span class="token tag attr-name" style="color:#00a4db">name</span><span class="token tag attr-value punctuation attr-equals" style="color:#393A34">=</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag attr-value" style="color:#e3116c">android.permission.FOREGROUND_SERVICE</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag" style="color:#00009f"> </span><span class="token tag punctuation" style="color:#393A34">/&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token tag punctuation" style="color:#393A34">&lt;/</span><span class="token tag" style="color:#00009f">manifest</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><br></span></code></pre><div class="buttonGroup_Sd8_"><button type="button" aria-label="Sao chép code vào bộ nhớ tạm" title="Sao chép" class="clean-btn"><span class="copyButtonIcons_LnQD" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_t3l1"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_IiZV"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<div class="language-xml codeBlockContainer_aalF theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_MHx8"><pre tabindex="0" class="prism-code language-xml codeBlock_zHgq thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_RjmQ"><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">manifest</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   </span><span class="token comment" style="color:#999988;font-style:italic">&lt;!--   Android 13 (API 33) trở lên--&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   </span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">uses-permission</span><span class="token tag" style="color:#00009f"> </span><span class="token tag attr-name namespace" style="color:#00a4db;opacity:0.7">android:</span><span class="token tag attr-name" style="color:#00a4db">name</span><span class="token tag attr-value punctuation attr-equals" style="color:#393A34">=</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag attr-value" style="color:#e3116c">android.permission.POST_NOTIFICATIONS</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag" style="color:#00009f"> </span><span class="token tag punctuation" style="color:#393A34">/&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   </span><span class="token comment" style="color:#999988;font-style:italic">&lt;!--   Khi muốn tự xử lý data message ở background hoặc terminated--&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   </span><span class="token comment" style="color:#999988;font-style:italic">&lt;!--   Nếu payload chỉ chứa data, Firebase không tự hiển thị thông báo.--&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">   </span><span class="token tag punctuation" style="color:#393A34">&lt;</span><span class="token tag" style="color:#00009f">uses-permission</span><span class="token tag" style="color:#00009f"> </span><span class="token tag attr-name namespace" style="color:#00a4db;opacity:0.7">android:</span><span class="token tag attr-name" style="color:#00a4db">name</span><span class="token tag attr-value punctuation attr-equals" style="color:#393A34">=</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag attr-value" style="color:#e3116c">android.permission.FOREGROUND_SERVICE</span><span class="token tag attr-value punctuation" style="color:#393A34">&quot;</span><span class="token tag" style="color:#00009f"> </span><span class="token tag punctuation" style="color:#393A34">/&gt;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token tag punctuation" style="color:#393A34">&lt;/</span><span class="token tag" style="color:#00009f">manifest</span><span class="token tag punctuation" style="color:#393A34">&gt;</span><br></span></code></pre><div class="buttonGroup_Sd8_"><button type="button" aria-label="Sao chép code vào bộ nhớ tạm" title="Sao chép" class="clean-btn"><span class="copyButtonIcons_LnQD" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_t3l1"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_IiZV"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<ul>
+<li>Trên IOS<!-- -->
+<ul>
+<li>Từ IOS 15 trở đi không cần khai báo quyền thông báo trong mã.</li>
+</ul>
+</li>
+</ul>
 <h3 class="anchor anchorWithStickyNavbar_FNw8" id="gửi-thông-báo">Gửi thông báo<a href="#gửi-thông-báo" class="hash-link" aria-label="Đường dẫn trực tiếp tới Gửi thông báo" title="Đường dẫn trực tiếp tới Gửi thông báo">​</a></h3>
 <ul>
 <li>FCM trên iOS yêu cầu Apple Push Notification service (APNs) nên cần phải có tài khoản Apple
@@ -46,14 +53,17 @@ Developer để tạo và gửi APNs Key (định dạng <code>.p8</code>) lên 
 </ul>
 <h2 class="anchor anchorWithStickyNavbar_FNw8" id="lưu-ý">Lưu ý<a href="#lưu-ý" class="hash-link" aria-label="Đường dẫn trực tiếp tới Lưu ý" title="Đường dẫn trực tiếp tới Lưu ý">​</a></h2>
 <ol>
-<li>Hiển thị thông báo<!-- -->
+<li>
+<p>Hiển thị thông báo</p>
 <ul>
-<li>FCM sẽ tự động hiển thị thông báo khi app ở background/terminated, có thể tuỳ chỉnh nếu muốn.</li>
+<li>FCM sẽ tự động hiển thị thông báo khi app ở background/terminated và Payload có chứa
+<code>notification</code>, có thể tuỳ chỉnh nếu muốn. Trên iOS, đảm bảo app đã yêu cầu quyền thông báo.</li>
 <li>Nếu muốn hiển thị trong foreground, cần custom UI (Dialog, Snackbar, Toast...) hoặc dùng
 flutter_local_notifications.</li>
 </ul>
 </li>
-<li>Thông tin cần gửi lên Server để thiết lập thông báo.<!-- -->
+<li>
+<p>Thông tin cần gửi lên Server để thiết lập thông báo.</p>
 <ul>
 <li>Gửi lên server các thông tin: deviceId và fcmToken.</li>
 <li>deviceId:<!-- -->
@@ -64,14 +74,24 @@ flutter_local_notifications.</li>
 </li>
 </ul>
 </li>
-<li>Lấy FCM Token<!-- -->
+<li>
+<p>Lấy FCM Token</p>
 <ul>
-<li>Trên Android, không cần quyền thông báo để lấy FCM Token.</li>
-<li>Trên IOS, bắt buộc xin quyền thông báo mới nhận được FCM Token.</li>
+<li>Không cần quyền thông báo để lấy FCM Token.</li>
+<li>Bắt buộc xin quyền thông báo mới nhận được APN Token.</li>
+</ul>
+</li>
+<li>
+<p>Thời hạn của FCM Token</p>
+<p>FCM Token thay đổi khi:</p>
+<ul>
+<li>Ứng dụng được khôi phục trên thiết bị mới.</li>
+<li>Người dùng gỡ cài đặt hoặc cài đặt lại ứng dụng.</li>
+<li>Người dùng xoá dữ liệu ứng dụng.</li>
 </ul>
 </li>
 </ol>
-<h2 class="anchor anchorWithStickyNavbar_FNw8" id="tài-liệu">Tài liệu<a href="#tài-liệu" class="hash-link" aria-label="Đường d ẫn trực tiếp tới Tài liệu" title="Đường dẫn trực tiếp tới Tài liệu">​</a></h2>
+<h2 class="anchor anchorWithStickyNavbar_FNw8" id="tài-liệu">Tài liệu<a href="#tài-liệu" class="hash-link" aria-label="Đường dẫn trực tiếp tới Tài liệu" title="Đường dẫn trực tiếp tới Tài liệu">​</a></h2>
 <ol>
 <li><a href="https://firebase.google.com/docs/cloud-messaging" target="_blank" rel="noopener noreferrer">https://firebase.google.com/docs/cloud-messaging</a></li>
 <li><a href="https://firebase.flutter.dev/docs/messaging/overview" target="_blank" rel="noopener noreferrer">https://firebase.flutter.dev/docs/messaging/overview</a></li>

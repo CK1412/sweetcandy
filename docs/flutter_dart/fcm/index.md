@@ -10,7 +10,7 @@ title: FCM
 
 ## Cơ chế hoạt động
 
-1. App lấy FCM registration Token -> FCM Token đối với Android và APNToken với IOS).
+1. App lấy FCM registration Token -> FirebaseMessaging.instance.getToken().
 2. Gửi FCM token lên server. -> Server lưu token để gửi thông báo sau này.
 3. Server gửi thông báo qua Firebase -> Firebase gửi đến thiết bị dựa vào token.
 4. App nhận và hiển thị thông báo.
@@ -36,10 +36,17 @@ title: FCM
  ```xml
 
 <manifest>
+    <!--   Android 13 (API 33) trở lên-->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!--   Khi muốn tự xử lý data message ở background hoặc terminated-->
+    <!--   Nếu payload chỉ chứa data, Firebase không tự hiển thị thông báo.-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 </manifest>
 ```
+
+- Trên IOS
+    - Từ IOS 15 trở đi không cần khai báo quyền thông báo trong mã.
 
 ### Gửi thông báo
 
@@ -49,7 +56,8 @@ title: FCM
 ## Lưu ý
 
 1. Hiển thị thông báo
-    - FCM sẽ tự động hiển thị thông báo khi app ở background/terminated, có thể tuỳ chỉnh nếu muốn.
+    - FCM sẽ tự động hiển thị thông báo khi app ở background/terminated và Payload có chứa
+      `notification`, có thể tuỳ chỉnh nếu muốn. Trên iOS, đảm bảo app đã yêu cầu quyền thông báo.
     - Nếu muốn hiển thị trong foreground, cần custom UI (Dialog, Snackbar, Toast...) hoặc dùng
       flutter_local_notifications.
 2. Thông tin cần gửi lên Server để thiết lập thông báo.
@@ -58,8 +66,14 @@ title: FCM
         - giúp server quản lý thiết bị và cập nhật token.
         - hỗ trợ đăng xuất và chặn thiết bị spam.
 3. Lấy FCM Token
-    - Trên Android, không cần quyền thông báo để lấy FCM Token.
-    - Trên IOS, bắt buộc xin quyền thông báo mới nhận được FCM Token.
+    - Không cần quyền thông báo để lấy FCM Token.
+    - Bắt buộc xin quyền thông báo mới nhận được APN Token.
+4. Thời hạn của FCM Token
+
+   FCM Token thay đổi khi:
+    - Ứng dụng được khôi phục trên thiết bị mới.
+    - Người dùng gỡ cài đặt hoặc cài đặt lại ứng dụng.
+    - Người dùng xoá dữ liệu ứng dụng.
 
 ## Tài liệu
 

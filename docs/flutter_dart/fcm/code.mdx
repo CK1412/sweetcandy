@@ -34,19 +34,19 @@ class FCMService {
 
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
-  /// Token dùng cho Android và Web
+  /// FCM Token
   Future<String> _getFCMToken() async {
     return await _messaging.getToken() ?? '';
   }
 
-  /// Token dùng cho IOS
+  /// APN Token IOS -> dùng khi muốn gửi noti trực tiếp qua APNs mà không dùng FCM
   Future<String> _getAPNToken() async {
     await FirebaseMessaging.instance.requestPermission();
     return await _messaging.getAPNSToken() ?? '';
   }
 
   Future<String> getFCMRegistrationToken() async {
-    final token = Platform.isIOS ? await _getAPNToken() : await _getFCMToken();
+    final token = await _getFCMToken();
     if (kDebugMode) {
       print('FCM RegistrationToken: $token');
     }

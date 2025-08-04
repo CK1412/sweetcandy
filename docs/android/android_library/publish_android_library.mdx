@@ -1,0 +1,191 @@
+---
+sidebar_position: 1
+title: Publish Android library
+---
+
+## Giới thiệu
+
+- Hướng dẫn cách xuất bản thư viện Android Kotlin riêng tư sử dụng Github Packages.
+
+## Hướng dẫn chi tiết các bước publish
+
+> Trong hướng dẫn này chúng tôi sẽ tách cấu hình publish ra file riêng
+
+### Bước 1: Cấu hình ENV
+
+- Tạo file `github.properties` trong thư mục root project với nội dung
+
+```properties
+gpr.usr=[Github-username'
+gpr.key=[PAT of Github với permission write packages]
+```
+
+- Thêm file vừa tạo vào .gitignore trong thư mục root project
+
+```
+github.properties
+```
+
+- Chạy lệnh để clear cache git
+
+```shell
+git rm -r --cached .
+```
+
+### Bước 2: Tạo file publish
+
+- Tạo file `publish-github-packages.gradle.kts` trong thư mục root library với nội dung
+
+```kotlin title="publish-github-packages.gradle.kts"
+import java.io.FileInputStream
+import java.util.Properties
+import org.gradle.api.publish.PublishingExtension
+
+apply(plugin = "maven-publish")
+val githubProperties = Properties()
+githubProperties.load(FileInputStream(rootProject.file("github.properties")))
+
+val libraryGroupId = "[com.yourcompany]"
+val libraryArtifactId = "[your-library-name]"
+val libraryVersion = "1.0.0"
+val libraryName = "[Your Library Name]"
+val libraryDescription = "[Description of your library]"
+val libraryUrl = "[https://github.com/yourusername/your-source-repo]"
+val githubPublishRepo =
+    "[your-publish-repo]" // Tên repo trên github dùng để chưa packages đã publish
+val githubUsername = "[your Github username]"
+
+configure<PublishingExtension> {
+    publications {
+        val PublicationName = "release"
+        create<MavenPublication>(PublicationName) {
+            groupId = libraryGroupId
+            artifactId = libraryArtifactId
+            version = libraryVersion
+
+            afterEvaluate {
+                from(components["release"]) // Map với Android release variant
+            }
+
+            pom {
+                name.set(libraryName)
+                description.set(libraryDescription)
+                url.set(libraryUrl)
+
+                // (Tuỳ chỉnh) Thêm license nếu muốn
+                licenses {
+                    license {
+                        name.set("The Apache License, Version 2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                // (Tuỳ chỉnh) Thêm developer nếu muốn
+                developers {
+                    developer {
+                        id.set("yourusername") // Github username
+                        name.set("Your Name") // Họ tên
+                        email.set("your.email@example.com") // Email
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/$githubUsername/$githubPublishRepo")
+            credentials {
+                username = githubProperties.get("gpr.usr") as String? ?: System.getenv("GPR_USER")
+                password =
+                    githubProperties.get("gpr.key") as String? ?: System.getenv("GPR_API_KEY")
+            }
+        }
+    }
+}
+```
+
+### Bước 3: Áp dụng cấu hình publish
+
+- Cấu hình build.gradle.kts chính (module level)
+
+```kotlin title="build.gradle.kts" (module level)
+// Apply file publish
+apply {
+    from("publish-github-packages.gradle.kts")
+}
+
+plugins {
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+    // KHÔNG cần apply maven-publish ở đây nữa
+}
+
+android {
+    // ...
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
+```
+
+### Bước 4: (Tuỳ chọn) Tạo task shortcut
+
+- Thêm vào build.gradle.kts (project level):
+
+```kotlin
+tasks.register("publishAllToGitHub") {
+    description = "Publishes the library modules to GitHub Packages"
+    group = "publishing"
+
+    subprojects {
+        if (plugins.hasPlugin("com.android.library")) {
+            // Format: publish[PublicationName]PublicationTo[RepositoryName]Repository
+            // PublicationName = Release -> lấy từ config trong publish-github-packages.gradle.kts
+            // RepositoryName = GitHubPackages -> lấy từ config trong publish-github-packages.gradle.kts
+            dependsOn("${path}:publishReleasePublicationToGitHubPackagesRepository")
+        }
+    }
+}
+```
+
+### Bước 5: Run publish
+
+Publish module cụ thể
+
+```shell
+./gradlew :your-module:publishReleasePublicationToGitHubPackagesRepository
+```
+
+Hoặc dùng task shortcut (nếu có - ở bước 4)
+
+```shell
+./gradlew publishAllToGitHub
+```
+
+## Hướng dẫn sử dụng Packages đã publish
+
+```kotlin title="settings.gradle.kts" (project level)
+repositories {
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/yourusername/my-android-packages")
+        credentials {
+            username = "provided_username" // Có thể đặt tên bất kỳ, ví dụ "Private"
+            password = "provided_token" // PAT của Github với quyền read packages
+        }
+    }
+}
+```
+
+```kotlin title="build.gradle.kts" (module level)
+dependencies {
+    implementation("com.yourcompany:your-library-name:1.0.0")
+}
+```

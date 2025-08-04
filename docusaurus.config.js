@@ -121,6 +121,12 @@ const config = {
             position: 'left',
             label: 'Showcase',
           },
+          {
+           type: 'docSidebar',
+           sidebarId: 'android',
+           position: 'left',
+           label: 'Android',
+          },
           // {
           //   type: 'docSidebar',
           //   sidebarId: 'tutorialBasics',

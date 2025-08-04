@@ -1,0 +1,216 @@
+---
+sidebar_position: 1
+title: Setup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Official docs: https://developers.google.com/maps/flutter-package/config
+
+## Step 1: Set the platform version
+
+<Tabs groupId="platform">
+  <TabItem value="android" label="Android" default>
+    Set the minimum SDK version for Android.
+    ```kotlin title="android/app/build.gradle.kts"
+      android {
+
+        defaultConfig {
+            applicationId "com.example.google_maps_in_flutter"
+            minSdkVersion 21     // Set to 21
+            targetSdkVersion flutter.targetSdkVersion
+            versionCode flutterVersionCode.toInteger()
+            versionName flutterVersionName
+        }
+
+      }
+    ```
+  </TabItem>
+  <TabItem value="ios" label="IOS">
+    Set the minimum iOS platform version.
+
+    1. Open the `ios/Podfile` config file in your preferred IDE.
+    2. Add the following lines to the beginning of this Podfile:
+
+    ```
+      # Set platform to 14.0 to enable latest Google Maps SDK
+      platform :ios, '14.0'
+    ```
+  </TabItem>
+</Tabs>
+
+## Step 2: Add your API key to the project
+
+:::note
+To avoid disclosing the `API_KEY` when publicly releasing the source code, we will not push the key to a remote server.
+:::
+
+<Tabs groupId="platform">
+  <TabItem value="android" label="Android" default>
+    1. Create file `appconfig.properties` in folder `android/`, with content
+
+        ```properties title="android/appconfig.properties"
+        MAP_API_KEY=[Put your Map API key here]
+        ```
+
+    2. Add line to android/.gitignore
+
+        ```
+        appconfig.properties
+        ```
+
+    3. Run the command below to clear cache git
+
+        ```
+        git rm -r --cached .
+        ```
+
+    4. Open file `android/app/build.gradle` add the following highlighted lines
+
+        <Tabs>
+          <TabItem value="groovy" label="Groovy" default>
+            ```groovy {12-4,27} title="build.gradle"
+
+            ...
+
+            def appConfigProperties = new Properties()
+            def appConfigPropertiesFile = rootProject.file('appconfig.properties')
+            if (appConfigPropertiesFile.exists()) {
+                appConfigPropertiesFile.withReader('UTF-8') { reader ->
+                    appConfigProperties.load(reader)
+                }
+            }
+
+            def mapApiKey =appConfigProperties.getProperty('MAP_API_KEY')
+
+            android {
+                ...
+
+                defaultConfig {
+                    // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+                    applicationId = "com.example.demo_flutter_google_map_marker"
+                    // You can update the following values to match your application needs.
+                    // For more information, see: https://flutter.dev/to/review-gradle-config.
+                    minSdk = flutter.minSdkVersion
+                    targetSdk = flutter.targetSdkVersion
+                    versionCode = flutter.versionCode
+                    versionName = flutter.versionName
+
+                    manifestPlaceholders += [MAP_API_KEY: mapApiKey]
+                }
+
+                ...
+            }
+            ```
+          </TabItem>
+          <TabItem value="kotlin" label="Kotlin">
+            ```kotlin {1,14-5,29} title="build.gradle.kts"
+            import java.util.Properties
+
+            ...
+
+            val appConfigPropertiesFile = rootProject.file("appconfig.properties")
+            val appConfigProperties = Properties()
+
+            if (appConfigPropertiesFile.exists()) {
+                appConfigPropertiesFile.inputStream().use { input ->
+                    appConfigProperties.load(input)
+                }
+            }
+
+            val mapApiKey = appConfigProperties.getProperty("MAP_API_KEY")
+
+            android {
+                ...
+
+                defaultConfig {
+                    // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+                    applicationId = "com.example.demo_flutter_google_map_marker"
+                    // You can update the following values to match your application needs.
+                    // For more information, see: https://flutter.dev/to/review-gradle-config.
+                    minSdk = flutter.minSdkVersion
+                    targetSdk = flutter.targetSdkVersion
+                    versionCode = flutter.versionCode
+                    versionName = flutter.versionName
+
+                    manifestPlaceholders["MAP_API_KEY"] = mapApiKey
+                }
+
+                ...
+            }
+            ```
+          </TabItem>
+        </Tabs>
+
+    5. In your `AndroidManifest.xml` file, go to `com.google.android.geo.API_KEY` and update the `android:value` attribute. If the `<meta-data>` tag does not exist, create it as a child of the `<application>` tag.
+
+        ```
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAP_API_KEY}" />
+        ```
+
+  </TabItem>
+
+  <TabItem value="ios" label="IOS">
+    1. Create file `AppConfig.xcconfig` in folder `ios/Flutter/`, and add this content
+
+        ```xcconfig title="ios/Flutter/AppConfig.xcconfig"
+        MAP_API_KEY=[Put your Map API key here]
+        ```
+
+        Open `ios/Flutter/Debug.xcconfig` file and add line
+
+            ```xcconfig
+            #include "AppConfig.xcconfig"
+            ```
+
+        Open `ios/Flutter/Release.xcconfig` file and add line
+
+            ```xcconfig
+            #include "AppConfig.xcconfig"
+            ```
+
+    2. Add line to ios/.gitignore
+
+        ```
+        AppConfig.xcconfig
+        ```
+
+    3. Run the command below to clear cache git
+
+        ```
+        git rm -r --cached .
+        ```
+
+    4. Open the `ios/Runner/Info.plist` file and add following lines
+
+        ```plist
+        <key>MapApiKey</key>
+        <string>$(MAP_API_KEY)</string>
+        ```
+
+    5. Open the ios/Runner/AppDelegate.swift file in your Flutter project and add following highlighted lines
+
+        ```swift {3,12-11} title="AppDelegate.swift"
+        import Flutter
+        import UIKit
+        import GoogleMaps
+
+        @main
+        @objc class AppDelegate: FlutterAppDelegate {
+          override func application(
+            _ application: UIApplication,
+            didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+          ) -> Bool {
+            let mapApiKey: String = Bundle.main.object(forInfoDictionaryKey: "MapApiKey") as! String
+            GMSServices.provideAPIKey(mapApiKey)
+
+            GeneratedPluginRegistrant.register(with: self)
+            return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+          }
+        }
+        ```
+  </TabItem>
+</Tabs>
